@@ -21,12 +21,19 @@ export default function Index() {
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
   const [fecthing, setFecthing] = useState<boolean>(true);
 
+  /**
+   * Initialise App State
+   */
   useEffect(() => {
     getDeviceInfo();
     getLocation();
   }, []);
 
 
+  /**
+   * Get Device Info
+   * Return unique device ID and Network IP
+   */
   const getDeviceInfo = async () => {
     try {
       const ipAddress = await Network.getIpAddressAsync() || ''; // Network address
@@ -35,8 +42,8 @@ export default function Index() {
       const info: DeviceInfo = { ipAddress, deviceId };
       setDeviceInfo(info);
     } catch (error) {
-      console.error('Error fetching device info:', error);
-      throw error;
+      console.error(error);
+      setErrorMsg('Error fetching network data')
     }
   };
 
@@ -66,6 +73,7 @@ export default function Index() {
 
   /**
    * Upload Location To Database
+   * ONLY A PROTOTYPE, Firestore is not implemented
    * @param location Location.LocationData
    */
   const uploadLocationToDatabase = async (location: any) => {
@@ -140,7 +148,6 @@ export default function Index() {
             <Txt style={{ color: 'red', textAlign: 'center' }}>{errorMsg || 'Failed to fetch data'}</Txt>
           </View>
         )}
-
 
       </ScrollView >
     </AppSafeAreaContentWrapper>
